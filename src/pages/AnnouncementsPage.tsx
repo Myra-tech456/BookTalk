@@ -59,9 +59,13 @@ function computeExpiresAt(option: VisibilityOption) {
 
   const now = new Date();
 
-  if (option === "2weeks") now.setDate(now.getDate() + 14);
-  else if (option === "1month") now.setMonth(now.getMonth() + 1);
-  else if (option === "1year") now.setFullYear(now.getFullYear() + 1);
+  if (option === "2weeks") {
+    now.setDate(now.getDate() + 14);
+  } else if (option === "1month") {
+    now.setMonth(now.getMonth() + 1);
+  } else if (option === "1year") {
+    now.setFullYear(now.getFullYear() + 1);
+  }
 
   return now.toISOString();
 }
@@ -140,7 +144,7 @@ export default function AnnouncementsPage() {
 
       if (!profilesError && profilesData) {
         const map: Record<string, string> = {};
-        (profilesData as Profile[]).forEach((profile) => {
+        profilesData.forEach((profile: Profile) => {
           map[profile.id] =
             profile.username || profile.full_name || "Utilisateur";
         });
@@ -156,10 +160,10 @@ export default function AnnouncementsPage() {
   }, []);
 
   const totalAnnouncements = announcements.length;
-
-  const pinnedAnnouncements = useMemo(() => {
-    return announcements.filter((a) => a.is_pinned).length;
-  }, [announcements]);
+  const pinnedAnnouncements = useMemo(
+    () => announcements.filter((a) => a.is_pinned).length,
+    [announcements]
+  );
 
   const resetCreateForm = () => {
     setTitle("");
@@ -279,16 +283,16 @@ export default function AnnouncementsPage() {
   return (
     <AppLayout title="Annonces">
       <section className="space-y-6">
-        <div className="rounded-3xl border border-ocean-800 bg-ocean-900 p-6">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
+              <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
                 Informations du groupe
               </p>
-              <h1 className="mt-3 text-3xl font-bold text-gold-300">
+              <h1 className="mt-3 text-3xl font-bold text-violet-400">
                 Annonces
               </h1>
-              <p className="mt-3 max-w-2xl text-sand-200">
+              <p className="mt-3 max-w-2xl text-slate-300">
                 Retrouvez ici les dernières informations importantes du groupe de
                 lecture. Les annonces épinglées restent visibles en priorité.
               </p>
@@ -297,7 +301,7 @@ export default function AnnouncementsPage() {
             {isAdmin && (
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300"
+                className="rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white transition hover:bg-violet-400"
               >
                 Créer une annonce
               </button>
@@ -307,18 +311,18 @@ export default function AnnouncementsPage() {
 
         {isAdmin && (
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
-              <p className="text-sm text-ocean-300">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-sm text-slate-400">
                 Nombre total d’annonces visibles
               </p>
-              <p className="mt-2 text-3xl font-bold text-sand-50">
+              <p className="mt-2 text-3xl font-bold text-white">
                 {totalAnnouncements}
               </p>
             </div>
 
-            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
-              <p className="text-sm text-ocean-300">Annonces épinglées</p>
-              <p className="mt-2 text-3xl font-bold text-sand-50">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <p className="text-sm text-slate-400">Annonces épinglées</p>
+              <p className="mt-2 text-3xl font-bold text-white">
                 {pinnedAnnouncements}
               </p>
             </div>
@@ -326,11 +330,11 @@ export default function AnnouncementsPage() {
         )}
 
         {loading ? (
-          <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-6 text-sand-200">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-slate-300">
             Chargement des annonces...
           </div>
         ) : announcements.length === 0 ? (
-          <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-6 text-sand-200">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-slate-300">
             Aucune annonce visible pour le moment.
           </div>
         ) : (
@@ -339,35 +343,33 @@ export default function AnnouncementsPage() {
               <button
                 key={announcement.id}
                 onClick={() => setSelectedAnnouncement(announcement)}
-                className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5 text-left transition hover:border-gold-400/40 hover:bg-ocean-800"
+                className="rounded-2xl border border-slate-800 bg-slate-900 p-5 text-left transition hover:border-violet-500/40 hover:bg-slate-800"
               >
                 <div className="flex flex-wrap items-center gap-3">
                   {announcement.is_pinned && (
-                    <span className="rounded-full bg-gold-400/20 px-3 py-1 text-xs font-semibold text-gold-200">
+                    <span className="rounded-full bg-amber-400/20 px-3 py-1 text-xs font-semibold text-amber-300">
                       Épinglée
                     </span>
                   )}
-
-                  <p className="text-sm text-ocean-300">
+                  <p className="text-sm text-slate-500">
                     {formatDate(announcement.created_at)}
                   </p>
-
-                  <span className="rounded-full bg-ocean-800 px-3 py-1 text-xs text-sand-200">
+                  <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
                     {announcement.expires_at
                       ? `Visible jusqu’au ${formatDate(announcement.expires_at)}`
                       : "Visible sans limite"}
                   </span>
                 </div>
 
-                <h2 className="mt-3 text-2xl font-semibold text-sand-50">
+                <h2 className="mt-3 text-2xl font-semibold text-white">
                   {announcement.title}
                 </h2>
 
-                <p className="mt-3 line-clamp-3 text-sand-200">
+                <p className="mt-3 line-clamp-3 text-slate-300">
                   {announcement.content || "Aucun contenu pour cette annonce."}
                 </p>
 
-                <p className="mt-4 text-sm text-ocean-300">
+                <p className="mt-4 text-sm text-slate-500">
                   Auteur : {profilesMap[announcement.created_by] || "Utilisateur"}
                 </p>
               </button>
@@ -378,30 +380,30 @@ export default function AnnouncementsPage() {
 
       {selectedAnnouncement && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-3xl rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
+          <div className="w-full max-w-3xl rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
                   {selectedAnnouncement.is_pinned && (
-                    <span className="rounded-full bg-gold-400/20 px-3 py-1 text-xs font-semibold text-gold-200">
+                    <span className="rounded-full bg-amber-400/20 px-3 py-1 text-xs font-semibold text-amber-300">
                       Épinglée
                     </span>
                   )}
-                  <p className="text-sm text-ocean-300">
+                  <p className="text-sm text-slate-500">
                     {formatDate(selectedAnnouncement.created_at)}
                   </p>
                 </div>
 
-                <h2 className="mt-3 text-3xl font-bold text-sand-50">
+                <h2 className="mt-3 text-3xl font-bold text-white">
                   {selectedAnnouncement.title}
                 </h2>
 
-                <p className="mt-3 text-sm text-sand-200">
+                <p className="mt-3 text-sm text-slate-400">
                   Auteur :{" "}
                   {profilesMap[selectedAnnouncement.created_by] || "Utilisateur"}
                 </p>
 
-                <p className="mt-2 text-sm text-ocean-300">
+                <p className="mt-2 text-sm text-slate-400">
                   {selectedAnnouncement.expires_at
                     ? `Visible jusqu’au ${formatDateTime(
                         selectedAnnouncement.expires_at
@@ -412,13 +414,13 @@ export default function AnnouncementsPage() {
 
               <button
                 onClick={() => setSelectedAnnouncement(null)}
-                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
+                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
               >
                 Fermer
               </button>
             </div>
 
-            <div className="mt-6 whitespace-pre-line text-sand-200">
+            <div className="mt-6 whitespace-pre-line text-slate-300">
               {selectedAnnouncement.content || "Aucun contenu pour cette annonce."}
             </div>
 
@@ -426,14 +428,14 @@ export default function AnnouncementsPage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <button
                   onClick={() => openEditModal(selectedAnnouncement)}
-                  className="rounded-xl border border-ocean-700 px-4 py-3 font-semibold text-sand-100 transition hover:bg-ocean-800"
+                  className="rounded-xl border border-slate-700 px-4 py-3 font-semibold text-white transition hover:bg-slate-800"
                 >
                   Modifier
                 </button>
 
                 <button
                   onClick={() => handleDeleteAnnouncement(selectedAnnouncement.id)}
-                  className="rounded-xl bg-sand-600 px-4 py-3 font-semibold text-sand-50 transition hover:bg-sand-500"
+                  className="rounded-xl bg-rose-600 px-4 py-3 font-semibold text-white transition hover:bg-rose-500"
                 >
                   Supprimer
                 </button>
@@ -445,20 +447,20 @@ export default function AnnouncementsPage() {
 
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
+          <div className="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
+                <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
                   Nouvelle annonce
                 </p>
-                <h2 className="mt-2 text-2xl font-bold text-sand-50">
+                <h2 className="mt-2 text-2xl font-bold text-white">
                   Créer une annonce
                 </h2>
               </div>
 
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
+                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
               >
                 Fermer
               </button>
@@ -466,31 +468,31 @@ export default function AnnouncementsPage() {
 
             <form onSubmit={handleCreateAnnouncement} className="mt-6 space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
-                  Titre
+                <label className="mb-2 block text-sm font-medium text-slate-300">
+                  Titre *
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Contenu
                 </label>
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   rows={6}
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Durée de visibilité
                 </label>
                 <select
@@ -498,7 +500,7 @@ export default function AnnouncementsPage() {
                   onChange={(e) =>
                     setVisibility(e.target.value as VisibilityOption)
                   }
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 >
                   <option value="2weeks">2 semaines</option>
                   <option value="1month">1 mois</option>
@@ -507,7 +509,7 @@ export default function AnnouncementsPage() {
                 </select>
               </div>
 
-              <label className="flex items-center gap-3 text-sand-200">
+              <label className="flex items-center gap-3 text-slate-300">
                 <input
                   type="checkbox"
                   checked={isPinned}
@@ -517,14 +519,14 @@ export default function AnnouncementsPage() {
                 Épingler cette annonce
               </label>
 
-              <p className="text-sm text-ocean-300">
+              <p className="text-sm text-slate-400">
                 Durée choisie : {getExpiryLabel(visibility)}
               </p>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {submitting ? "Création en cours..." : "Publier l’annonce"}
               </button>
@@ -535,20 +537,20 @@ export default function AnnouncementsPage() {
 
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
+          <div className="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
+                <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
                   Modifier
                 </p>
-                <h2 className="mt-2 text-2xl font-bold text-sand-50">
+                <h2 className="mt-2 text-2xl font-bold text-white">
                   Modifier l’annonce
                 </h2>
               </div>
 
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
+                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
               >
                 Fermer
               </button>
@@ -556,31 +558,31 @@ export default function AnnouncementsPage() {
 
             <form onSubmit={handleUpdateAnnouncement} className="mt-6 space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
-                  Titre
+                <label className="mb-2 block text-sm font-medium text-slate-300">
+                  Titre *
                 </label>
                 <input
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Contenu
                 </label>
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   rows={6}
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-sand-200">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Durée de visibilité
                 </label>
                 <select
@@ -588,7 +590,7 @@ export default function AnnouncementsPage() {
                   onChange={(e) =>
                     setEditVisibility(e.target.value as VisibilityOption)
                   }
-                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
                 >
                   <option value="2weeks">2 semaines</option>
                   <option value="1month">1 mois</option>
@@ -597,7 +599,7 @@ export default function AnnouncementsPage() {
                 </select>
               </div>
 
-              <label className="flex items-center gap-3 text-sand-200">
+              <label className="flex items-center gap-3 text-slate-300">
                 <input
                   type="checkbox"
                   checked={editPinned}
@@ -607,14 +609,14 @@ export default function AnnouncementsPage() {
                 Épingler cette annonce
               </label>
 
-              <p className="text-sm text-ocean-300">
+              <p className="text-sm text-slate-400">
                 Durée choisie : {getExpiryLabel(editVisibility)}
               </p>
 
               <button
                 type="submit"
                 disabled={updating}
-                className="w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {updating
                   ? "Modification en cours..."
