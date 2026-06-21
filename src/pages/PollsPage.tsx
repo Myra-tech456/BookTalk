@@ -28,14 +28,6 @@ type Profile = {
   full_name: string | null;
 };
 
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 function formatDateTime(dateString: string) {
   return new Date(dateString).toLocaleString("fr-FR", {
     day: "2-digit",
@@ -403,8 +395,6 @@ export default function PollsPage() {
     }
 
     await loadPollsAndVotes();
-    const refreshed = polls.find((poll) => poll.id === selectedPoll.id) || selectedPoll;
-    setSelectedPoll(refreshed);
   };
 
   const PollCard = ({ poll }: { poll: Poll }) => {
@@ -414,33 +404,33 @@ export default function PollsPage() {
     return (
       <button
         onClick={() => openPollDetails(poll)}
-        className="rounded-2xl border border-slate-800 bg-slate-900 p-5 text-left transition hover:border-fuchsia-500/40 hover:bg-slate-800"
+        className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5 text-left transition hover:border-gold-400/40 hover:bg-ocean-800"
       >
         <div className="flex flex-wrap items-center gap-3">
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${
               status === "ouvert"
-                ? "bg-emerald-400/20 text-emerald-300"
+                ? "bg-ocean-700 text-ocean-100"
                 : status === "bientôt terminé"
-                ? "bg-amber-400/20 text-amber-300"
-                : "bg-rose-500/20 text-rose-300"
+                ? "bg-gold-400/20 text-gold-200"
+                : "bg-sand-700/20 text-sand-200"
             }`}
           >
             {status}
           </span>
 
-          <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
+          <span className="rounded-full bg-ocean-800 px-3 py-1 text-xs text-sand-200">
             {poll.allow_multiple ? "Réponses multiples" : "Réponse unique"}
           </span>
         </div>
 
-        <h2 className="mt-4 text-2xl font-semibold text-white">{poll.title}</h2>
+        <h2 className="mt-4 text-2xl font-semibold text-sand-50">{poll.title}</h2>
 
-        <p className="mt-3 line-clamp-3 text-slate-300">
+        <p className="mt-3 line-clamp-3 text-sand-200">
           {poll.description || "Aucune description."}
         </p>
 
-        <div className="mt-4 space-y-1 text-sm text-slate-500">
+        <div className="mt-4 space-y-1 text-sm text-ocean-300">
           <p>Date limite : {formatDateTime(poll.deadline)}</p>
           <p>Temps restant : {getTimeLeft(poll.deadline)}</p>
           <p>Nombre de votes : {totalVotesForPoll}</p>
@@ -453,16 +443,16 @@ export default function PollsPage() {
   return (
     <AppLayout title="Sondages">
       <section className="space-y-6">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
+        <div className="rounded-3xl border border-ocean-800 bg-ocean-900 p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+              <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
                 Participation du groupe
               </p>
-              <h1 className="mt-3 text-3xl font-bold text-fuchsia-400">
+              <h1 className="mt-3 text-3xl font-bold text-gold-300">
                 Sondages
               </h1>
-              <p className="mt-3 max-w-2xl text-slate-300">
+              <p className="mt-3 max-w-2xl text-sand-200">
                 Répondez aux sondages du groupe, consultez les résultats et suivez
                 les échéances avant la fermeture automatique.
               </p>
@@ -471,7 +461,7 @@ export default function PollsPage() {
             {isAdmin && (
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="rounded-xl bg-fuchsia-500 px-4 py-3 font-semibold text-white transition hover:bg-fuchsia-400"
+                className="rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300"
               >
                 Créer un sondage
               </button>
@@ -481,19 +471,19 @@ export default function PollsPage() {
 
         {isAdmin && (
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-              <p className="text-sm text-slate-400">Nombre total</p>
-              <p className="mt-2 text-3xl font-bold text-white">{totalPolls}</p>
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
+              <p className="text-sm text-ocean-300">Nombre total</p>
+              <p className="mt-2 text-3xl font-bold text-sand-50">{totalPolls}</p>
             </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-              <p className="text-sm text-slate-400">Sondages ouverts</p>
-              <p className="mt-2 text-3xl font-bold text-white">{openPollsCount}</p>
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
+              <p className="text-sm text-ocean-300">Sondages ouverts</p>
+              <p className="mt-2 text-3xl font-bold text-sand-50">{openPollsCount}</p>
             </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-              <p className="text-sm text-slate-400">Sondages archivés</p>
-              <p className="mt-2 text-3xl font-bold text-white">
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
+              <p className="text-sm text-ocean-300">Sondages archivés</p>
+              <p className="mt-2 text-3xl font-bold text-sand-50">
                 {archivedPollsCount}
               </p>
             </div>
@@ -501,16 +491,16 @@ export default function PollsPage() {
         )}
 
         <div className="space-y-4">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 className="text-xl font-semibold text-white">Sondages ouverts</h2>
+          <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
+            <h2 className="text-xl font-semibold text-sand-50">Sondages ouverts</h2>
           </div>
 
           {loading ? (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-slate-300">
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-6 text-sand-200">
               Chargement des sondages...
             </div>
           ) : activePolls.length === 0 ? (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-slate-300">
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-6 text-sand-200">
               Aucun sondage ouvert.
             </div>
           ) : (
@@ -523,12 +513,12 @@ export default function PollsPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 className="text-xl font-semibold text-white">Archives</h2>
+          <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-5">
+            <h2 className="text-xl font-semibold text-sand-50">Archives</h2>
           </div>
 
           {loading ? null : archivedPolls.length === 0 ? (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 text-slate-300">
+            <div className="rounded-2xl border border-ocean-800 bg-ocean-900 p-6 text-sand-200">
               Aucun sondage archivé.
             </div>
           ) : (
@@ -543,38 +533,38 @@ export default function PollsPage() {
 
       {selectedPoll && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+          <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
                       getPollStatus(selectedPoll.deadline) === "ouvert"
-                        ? "bg-emerald-400/20 text-emerald-300"
+                        ? "bg-ocean-700 text-ocean-100"
                         : getPollStatus(selectedPoll.deadline) === "bientôt terminé"
-                        ? "bg-amber-400/20 text-amber-300"
-                        : "bg-rose-500/20 text-rose-300"
+                        ? "bg-gold-400/20 text-gold-200"
+                        : "bg-sand-700/20 text-sand-200"
                     }`}
                   >
                     {getPollStatus(selectedPoll.deadline)}
                   </span>
 
-                  <span className="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
+                  <span className="rounded-full bg-ocean-800 px-3 py-1 text-xs text-sand-200">
                     {selectedPoll.allow_multiple
                       ? "Réponses multiples"
                       : "Réponse unique"}
                   </span>
                 </div>
 
-                <h2 className="mt-3 text-3xl font-bold text-white">
+                <h2 className="mt-3 text-3xl font-bold text-sand-50">
                   {selectedPoll.title}
                 </h2>
 
-                <p className="mt-3 text-slate-300">
+                <p className="mt-3 text-sand-200">
                   {selectedPoll.description || "Aucune description."}
                 </p>
 
-                <div className="mt-4 space-y-1 text-sm text-slate-500">
+                <div className="mt-4 space-y-1 text-sm text-ocean-300">
                   <p>Date limite : {formatDateTime(selectedPoll.deadline)}</p>
                   <p>Temps restant : {getTimeLeft(selectedPoll.deadline)}</p>
                   <p>
@@ -585,20 +575,20 @@ export default function PollsPage() {
 
               <button
                 onClick={() => setSelectedPoll(null)}
-                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
+                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
               >
                 Fermer
               </button>
             </div>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <h3 className="text-xl font-semibold text-white">Répondre</h3>
+              <div className="rounded-2xl border border-ocean-800 bg-ocean-950 p-5">
+                <h3 className="text-xl font-semibold text-sand-50">Répondre</h3>
                 <div className="mt-4 space-y-3">
                   {selectedPoll.options.map((option) => (
                     <label
                       key={option}
-                      className="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-800 bg-slate-900 p-4 hover:border-fuchsia-500/40"
+                      className="flex cursor-pointer items-start gap-3 rounded-xl border border-ocean-800 bg-ocean-900 p-4 hover:border-gold-400/40"
                     >
                       <input
                         type={selectedPoll.allow_multiple ? "checkbox" : "radio"}
@@ -608,7 +598,7 @@ export default function PollsPage() {
                         disabled={getPollStatus(selectedPoll.deadline) === "expiré"}
                         className="mt-1"
                       />
-                      <span className="text-slate-200">{option}</span>
+                      <span className="text-sand-100">{option}</span>
                     </label>
                   ))}
                 </div>
@@ -618,21 +608,21 @@ export default function PollsPage() {
                   disabled={
                     voteSubmitting || getPollStatus(selectedPoll.deadline) === "expiré"
                   }
-                  className="mt-5 w-full rounded-xl bg-fuchsia-500 px-4 py-3 font-semibold text-white transition hover:bg-fuchsia-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-5 w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {voteSubmitting ? "Envoi en cours..." : "Enregistrer ma réponse"}
                 </button>
 
                 {getCurrentUserVote(selectedPoll.id) && (
-                  <p className="mt-3 text-sm text-slate-400">
+                  <p className="mt-3 text-sm text-ocean-300">
                     Tu as déjà répondu à ce sondage. Tu peux modifier ta réponse
                     tant qu’il est ouvert.
                   </p>
                 )}
               </div>
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <h3 className="text-xl font-semibold text-white">Résultats</h3>
+              <div className="rounded-2xl border border-ocean-800 bg-ocean-950 p-5">
+                <h3 className="text-xl font-semibold text-sand-50">Résultats</h3>
                 <div className="mt-4 space-y-4">
                   {selectedPoll.options.map((option) => {
                     const count = getOptionVoteCount(selectedPoll.id, option);
@@ -645,14 +635,14 @@ export default function PollsPage() {
                     return (
                       <div key={option}>
                         <div className="mb-2 flex items-center justify-between gap-3">
-                          <span className="text-slate-200">{option}</span>
-                          <span className="text-sm text-slate-400">
+                          <span className="text-sand-100">{option}</span>
+                          <span className="text-sm text-ocean-300">
                             {count} vote(s) • {percentage}%
                           </span>
                         </div>
-                        <div className="h-3 overflow-hidden rounded-full bg-slate-800">
+                        <div className="h-3 overflow-hidden rounded-full bg-ocean-800">
                           <div
-                            className="h-full rounded-full bg-fuchsia-500 transition-all"
+                            className="h-full rounded-full bg-gold-400 transition-all"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
@@ -667,14 +657,14 @@ export default function PollsPage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <button
                   onClick={() => openEditModal(selectedPoll)}
-                  className="rounded-xl border border-slate-700 px-4 py-3 font-semibold text-white transition hover:bg-slate-800"
+                  className="rounded-xl border border-ocean-700 px-4 py-3 font-semibold text-sand-100 transition hover:bg-ocean-800"
                 >
                   Modifier
                 </button>
 
                 <button
                   onClick={() => handleDeletePoll(selectedPoll.id)}
-                  className="rounded-xl bg-rose-600 px-4 py-3 font-semibold text-white transition hover:bg-rose-500"
+                  className="rounded-xl bg-sand-600 px-4 py-3 font-semibold text-sand-50 transition hover:bg-sand-500"
                 >
                   Supprimer
                 </button>
@@ -686,20 +676,20 @@ export default function PollsPage() {
 
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+          <div className="w-full max-w-2xl rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+                <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
                   Nouveau sondage
                 </p>
-                <h2 className="mt-2 text-2xl font-bold text-white">
+                <h2 className="mt-2 text-2xl font-bold text-sand-50">
                   Créer un sondage
                 </h2>
               </div>
 
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
+                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
               >
                 Fermer
               </button>
@@ -707,31 +697,31 @@ export default function PollsPage() {
 
             <form onSubmit={handleCreatePoll} className="mt-6 space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Titre *
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Description courte
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Choix de réponses *
                 </label>
                 <textarea
@@ -739,23 +729,23 @@ export default function PollsPage() {
                   onChange={(e) => setOptionsText(e.target.value)}
                   rows={6}
                   placeholder={"Un choix par ligne\nChoix 1\nChoix 2\nChoix 3"}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none placeholder:text-ocean-300 focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Date limite *
                 </label>
                 <input
                   type="datetime-local"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
-              <label className="flex items-center gap-3 text-slate-300">
+              <label className="flex items-center gap-3 text-sand-200">
                 <input
                   type="checkbox"
                   checked={allowMultiple}
@@ -768,7 +758,7 @@ export default function PollsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-xl bg-fuchsia-500 px-4 py-3 font-semibold text-white transition hover:bg-fuchsia-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {submitting ? "Création en cours..." : "Publier le sondage"}
               </button>
@@ -779,20 +769,20 @@ export default function PollsPage() {
 
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+          <div className="w-full max-w-2xl rounded-3xl border border-ocean-800 bg-ocean-900 p-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+                <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
                   Modifier
                 </p>
-                <h2 className="mt-2 text-2xl font-bold text-white">
+                <h2 className="mt-2 text-2xl font-bold text-sand-50">
                   Modifier le sondage
                 </h2>
               </div>
 
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:bg-slate-800"
+                className="rounded-lg border border-ocean-700 px-3 py-2 text-sand-100 hover:bg-ocean-800"
               >
                 Fermer
               </button>
@@ -800,54 +790,54 @@ export default function PollsPage() {
 
             <form onSubmit={handleUpdatePoll} className="mt-6 space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Titre *
                 </label>
                 <input
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Description courte
                 </label>
                 <textarea
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
                   rows={4}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Choix de réponses *
                 </label>
                 <textarea
                   value={editOptionsText}
                   onChange={(e) => setEditOptionsText(e.target.value)}
                   rows={6}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-sand-200">
                   Date limite *
                 </label>
                 <input
                   type="datetime-local"
                   value={editDeadline}
                   onChange={(e) => setEditDeadline(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-fuchsia-400"
+                  className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
                 />
               </div>
 
-              <label className="flex items-center gap-3 text-slate-300">
+              <label className="flex items-center gap-3 text-sand-200">
                 <input
                   type="checkbox"
                   checked={editAllowMultiple}
@@ -860,7 +850,7 @@ export default function PollsPage() {
               <button
                 type="submit"
                 disabled={updating}
-                className="w-full rounded-xl bg-fuchsia-500 px-4 py-3 font-semibold text-white transition hover:bg-fuchsia-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {updating
                   ? "Modification en cours..."

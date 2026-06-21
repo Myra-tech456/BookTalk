@@ -259,7 +259,7 @@ export default function LibraryPage() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex aspect-[3/4] items-center justify-center p-6 text-center text-sm text-slate-400">
+                  <div className="flex aspect-3/4 items-center justify-center p-6 text-center text-sm text-slate-400">
                     Pas de couverture
                   </div>
                 )}
