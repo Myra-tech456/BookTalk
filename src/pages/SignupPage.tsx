@@ -1,91 +1,152 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 export default function SignupPage() {
-  const navigate = useNavigate();
-
-  const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMessage("");
+    setErrorMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
     setLoading(true);
 
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: {
-          username: pseudo,
-        },
+        emailRedirectTo:
+          window.location.hostname === "localhost"
+            ? "http://localhost:5173/dashboard"
+            : "https://booktalk-club.netlify.app/dashboard",
       },
     });
 
     setLoading(false);
 
     if (error) {
-      alert(error.message);
+      setErrorMessage(error.message);
       return;
     }
 
-    alert("Compte créé avec succès.");
-    navigate("/login");
+    setMessage("Compte créé. Vérifie ton email pour confirmer l’inscription.");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4">
-      <form
-        onSubmit={handleSignup}
-        className="w-full max-w-md bg-slate-900 p-8 rounded-2xl shadow-xl space-y-4"
-      >
-        <h1 className="text-3xl font-bold text-violet-400">Inscription</h1>
+    <main className="min-h-screen bg-slate-950 px-4 py-10 text-white">
+      <div className="mx-auto max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+        <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+          Inscription
+        </p>
+        <h1 className="mt-3 text-3xl font-bold text-violet-400">
+          Rejoindre le groupe
+        </h1>
+        <p className="mt-3 text-slate-300">
+          Crée ton compte pour accéder à l’espace BookTalk.
+        </p>
 
-        <input
-          type="text"
-          placeholder="Pseudo"
-          value={pseudo}
-          onChange={(e) => setPseudo(e.target.value)}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3"
-          required
-        />
+        <form onSubmit={handleSignup} className="mt-8 space-y-4">
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-300">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400"
+            />
+          </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3"
-          required
-        />
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-300">
+              Mot de passe
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-24 text-white outline-none focus:border-violet-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-violet-400 hover:underline"
+              >
+                {showPassword ? "Masquer" : "Afficher"}
+              </button>
+            </div>
+          </div>
 
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3"
-          required
-        />
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-300">
+              Confirmer le mot de passe
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-24 text-white outline-none focus:border-violet-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-violet-400 hover:underline"
+              >
+                {showConfirmPassword ? "Masquer" : "Afficher"}
+              </button>
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-violet-600 px-4 py-3 font-semibold hover:bg-violet-500"
-        >
-          {loading ? "Création..." : "Créer un compte"}
-        </button>
+          {message && (
+            <div className="rounded-xl bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+              {message}
+            </div>
+          )}
 
-        <p className="text-sm text-slate-300">
+          {errorMessage && (
+            <div className="rounded-xl bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+              {errorMessage}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? "Création..." : "Créer un compte"}
+          </button>
+        </form>
+
+        <p className="mt-6 text-sm text-slate-300">
           Déjà un compte ?{" "}
           <Link to="/login" className="text-violet-400 hover:underline">
             Se connecter
           </Link>
         </p>
-        
-      </form>
+      </div>
     </main>
   );
 }

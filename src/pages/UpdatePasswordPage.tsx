@@ -6,6 +6,8 @@ export default function UpdatePasswordPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [message, setMessage] = useState("");
@@ -60,55 +62,87 @@ export default function UpdatePasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ocean-950 px-4 py-10 text-sand-50">
-      <div className="mx-auto max-w-md rounded-3xl border border-ocean-800 bg-ocean-900 p-6">
-        <p className="text-sm uppercase tracking-[0.2em] text-ocean-300">
+    <main className="min-h-screen bg-slate-950 px-4 py-10 text-white">
+      <div className="mx-auto max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-xl">
+        <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
           Sécurité
         </p>
-        <h1 className="mt-3 text-3xl font-bold text-gold-300">
+        <h1 className="mt-3 text-3xl font-bold text-violet-400">
           Nouveau mot de passe
         </h1>
 
         {!ready ? (
-          <p className="mt-4 text-sand-200">
+          <p className="mt-4 text-slate-300">
             Ouvre cette page depuis le lien reçu par email.
           </p>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-sand-200">
+              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Nouveau mot de passe
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
-              />
+              <div className="relative">
+                <input
+                  id="new-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-24 text-white outline-none focus:border-violet-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-controls="new-password"
+                  aria-label={
+                    showPassword
+                      ? "Masquer le mot de passe"
+                      : "Afficher le mot de passe"
+                  }
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-violet-400 hover:underline"
+                >
+                  {showPassword ? "Masquer" : "Afficher"}
+                </button>
+              </div>
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-sand-200">
+              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Confirmer le mot de passe
               </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="w-full rounded-xl border border-ocean-700 bg-ocean-950 px-4 py-3 text-sand-50 outline-none focus:border-gold-300"
-              />
+              <div className="relative">
+                <input
+                  id="confirm-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-24 text-white outline-none focus:border-violet-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  aria-controls="confirm-password"
+                  aria-label={
+                    showConfirmPassword
+                      ? "Masquer la confirmation du mot de passe"
+                      : "Afficher la confirmation du mot de passe"
+                  }
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-violet-400 hover:underline"
+                >
+                  {showConfirmPassword ? "Masquer" : "Afficher"}
+                </button>
+              </div>
             </div>
 
             {message && (
-              <div className="rounded-xl bg-ocean-800 px-4 py-3 text-sm text-sand-100">
+              <div className="rounded-xl bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
                 {message}
               </div>
             )}
 
             {errorMessage && (
-              <div className="rounded-xl bg-sand-700/40 px-4 py-3 text-sm text-sand-50">
+              <div className="rounded-xl bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
                 {errorMessage}
               </div>
             )}
@@ -116,13 +150,13 @@ export default function UpdatePasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gold-400 px-4 py-3 font-semibold text-ocean-950 transition hover:bg-gold-300 disabled:opacity-60"
+              className="w-full rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white transition hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Mise à jour..." : "Changer le mot de passe"}
             </button>
           </form>
         )}
       </div>
-    </div>
+    </main>
   );
 }
