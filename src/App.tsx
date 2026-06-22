@@ -10,6 +10,8 @@ import AnnouncementsPage from "./pages/AnnouncementsPage";
 import PollsPage from "./pages/PollsPage";
 import FormsPage from "./pages/FormsPage";
 import EventsPage from "./pages/EventsPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 
 
 export default function App() {
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/update-password" element={<UpdatePasswordPage />} />
 
         <Route
           path="/dashboard"
