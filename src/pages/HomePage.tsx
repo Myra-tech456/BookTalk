@@ -24,7 +24,7 @@ export default function HomePage() {
       </header>
 
       <section className="mx-auto flex min-h-[calc(100vh-81px)] max-w-7xl items-center justify-center px-6 py-12">
-        <div className="w-full max-w-4xl rounded-[2rem] border border-slate-800 bg-slate-900 px-8 py-10 shadow-2xl shadow-slate-950/30 md:px-14 md:py-14">
+        <div className="w-full max-w-4xl rounded-4xl border border-slate-800 bg-slate-900 px-8 py-10 shadow-2xl shadow-slate-950/30 md:px-14 md:py-14">
           <div className="flex flex-col items-center text-center">
             <img
               src="/booktalk-logo.jpg"

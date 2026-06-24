@@ -44,7 +44,7 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-40 flex h-screen w-72 flex-col border-r border-slate-800 bg-slate-900/95 backdrop-blur transition-transform duration-300 ${
+        className={`fixed left-0 top-0 z-40 flex h-screen w-72 flex-col overflow-hidden border-r border-slate-800 bg-slate-900/95 backdrop-blur transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
@@ -84,7 +84,7 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
           </span>
         </div>
 
-        <nav className="flex-1 space-y-2 px-4 py-4">
+        <nav className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
@@ -158,14 +158,14 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
           )}
 
           {isAdmin && (
-            <p className="px-4 pt-3 text-xs text-slate-500">
+            <p className="px-4 pb-4 pt-3 text-xs leading-6 text-slate-500">
               Les options admin et statistiques apparaissent directement dans les
               pages Annonces, Sondages et Formulaires.
             </p>
           )}
         </nav>
 
-        <div className="border-t border-slate-800 p-4">
+        <div className="border-t border-slate-800 p-4 pb-6">
           <button
             onClick={handleLogout}
             className="w-full rounded-xl bg-rose-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-rose-500"
