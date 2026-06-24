@@ -1,7 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SuperAdminRoute from "./components/SuperAdminRoute";
 import SuperAdminPage from "./pages/SuperAdminPage";
@@ -10,15 +13,12 @@ import AnnouncementsPage from "./pages/AnnouncementsPage";
 import PollsPage from "./pages/PollsPage";
 import FormsPage from "./pages/FormsPage";
 import EventsPage from "./pages/EventsPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import UpdatePasswordPage from "./pages/UpdatePasswordPage";
-
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -46,7 +46,7 @@ export default function App() {
           path="/polls"
           element={
             <ProtectedRoute>
-              <PollsPage/>
+              <PollsPage />
             </ProtectedRoute>
           }
         />
@@ -68,6 +68,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/forms"
           element={
@@ -76,7 +77,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/superadmin"
           element={
@@ -85,6 +86,8 @@ export default function App() {
             </SuperAdminRoute>
           }
         />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
