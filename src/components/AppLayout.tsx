@@ -19,7 +19,6 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
   const { role, user } = useAuth();
   const navigate = useNavigate();
 
-  const isAdmin = role === "admin" || role === "superadmin";
   const isSuperAdmin = role === "superadmin";
 
   const handleLogout = async () => {
@@ -157,12 +156,7 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
             </NavLink>
           )}
 
-          {isAdmin && (
-            <p className="px-4 pb-4 pt-3 text-xs leading-6 text-slate-500">
-              Les options admin et statistiques apparaissent directement dans les
-              pages Annonces, Sondages et Formulaires.
-            </p>
-          )}
+        
         </nav>
 
         <div className="border-t border-slate-800 p-4 pb-6">
